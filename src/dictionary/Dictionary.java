@@ -17,6 +17,7 @@ public class Dictionary {
      * Hash map from slang words to their definitions
      */
     private HashMap<String, HashSet<String>> dictionary;
+    private History history;
 
     /**
      * Default constructor
@@ -108,5 +109,10 @@ public class Dictionary {
      */
     public void deleteSlangWord(String slang) {
         dictionary.remove(slang);
+    }
+
+    public void resetDictionary(HashMap<String, HashSet<String>> dictionary) {
+        dictionary.clear();
+        this.dictionary = dictionary;
     }
 }
