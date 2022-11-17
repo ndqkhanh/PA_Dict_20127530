@@ -1,7 +1,10 @@
 package dictionary;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * dictionary
@@ -36,34 +39,34 @@ public class Dictionary {
         this.dictionary = dictionary;
     }
 
-//    /**
-//     * @param slang Slang word we want to search from our dictionary
-//     * @return ArrayList of slang words and definitions that contain the slang parameter pass in
-//     */
-//    public ArrayList<Map.Entry<String, HashSet<String>>> searchDefsBySlang(String slang) {
-//        return dictionary
-//                .entrySet()
-//                .stream()
-//                .filter(record -> record.getKey().contains(slang))
-//                .collect(Collectors.toCollection(ArrayList::new));
-//    }
-//
-//
-//    /**
-//     * @param def Definition we want to search from our dictionary
-//     * @return ArrayList of slang words and definitions that contain the def parameter pass in
-//     */
-//    public ArrayList<Map.Entry<String, HashSet<String>>> searchSlangsByDef(String def) {
-//        String[] arrOfStr = def.split(" ");
-//        return dictionary
-//                .entrySet()
-//                .stream()
-//                .filter(record -> {
-//                    for (String word : arrOfStr)
-//                        if (record.getValue().contains(word)) return true;
-//                    return false;
-//                }).collect(Collectors.toCollection(ArrayList::new));
-//    }
+    /**
+     * @param slang Slang word we want to search from our dictionary
+     * @return ArrayList of slang words and definitions that contain the slang parameter pass in
+     */
+    public ArrayList<Map.Entry<String, HashSet<String>>> searchDefsBySlang(String slang) {
+        return dictionary
+                .entrySet()
+                .stream()
+                .filter(record -> record.getKey().contains(slang))
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+
+    /**
+     * @param def Definition we want to search from our dictionary
+     * @return ArrayList of slang words and definitions that contain the def parameter pass in
+     */
+    public ArrayList<Map.Entry<String, HashSet<String>>> searchSlangsByDef(String def) {
+        String[] arrOfStr = def.split(" ");
+        return dictionary
+                .entrySet()
+                .stream()
+                .filter(record -> {
+                    for (String word : arrOfStr)
+                        if (record.getValue().contains(word)) return true;
+                    return false;
+                }).collect(Collectors.toCollection(ArrayList::new));
+    }
 
     /**
      * @param slang       Slang word we want to add to dictionary
