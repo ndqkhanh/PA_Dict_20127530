@@ -4,8 +4,8 @@ out/
 !**/src/test/**/out/
 
 ### Nhap ###
-./src/Nhap.java
-./src/nhap.java
+/src/Nhap.java
+/src/nhap.java
 
 ### Eclipse ###
 .apt_generated
