@@ -29,8 +29,6 @@ class Nhap {
         test.add("5");
         test.add("6");
         dictionary.put("item2", test);
-//        nhap.searchSlangsByDef("1 2");
-//         System.out.println(dictionary.get("item1"));
         System.out.println(nhap.searchSlangsByDef("1 2"));
     }
 
