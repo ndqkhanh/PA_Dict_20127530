@@ -29,7 +29,7 @@ class Nhap {
         test.add("5");
         test.add("6");
         dictionary.put("item2", test);
-        System.out.println(nhap.searchSlangsByDef("1 2"));
+//        System.out.println(nhap.searchSlangsByDef("1 2"));
     }
 
     public ArrayList<Map.Entry<String, HashSet<String>>> searchSlangsByDef(String def) {
