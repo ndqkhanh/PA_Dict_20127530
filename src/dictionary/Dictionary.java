@@ -13,11 +13,11 @@ import java.util.stream.Collectors;
  * Description: ...
  */
 public class Dictionary {
+    private final HistoryMap historyMap = new HistoryMap();
     /**
      * Hash map from slang words to their definitions
      */
     private HashMap<String, HashSet<String>> dictionary;
-    private History history;
 
     /**
      * Default constructor
@@ -48,10 +48,9 @@ public class Dictionary {
         return dictionary
                 .entrySet()
                 .stream()
-                .filter(record -> record.getKey().contains(slang))
+                .filter(record -> record.getKey().toLowerCase().contains(slang.toLowerCase()))
                 .collect(Collectors.toCollection(ArrayList::new));
     }
-
 
     /**
      * @param def Definition we want to search from our dictionary
@@ -63,8 +62,9 @@ public class Dictionary {
                 .entrySet()
                 .stream()
                 .filter(record -> {
-                    for (String word : arrOfStr)
-                        if (record.getValue().contains(word)) return true;
+                    for (String ele : record.getValue())
+                        for (String word : arrOfStr)
+                            if (ele.equalsIgnoreCase(word)) return true;
                     return false;
                 }).collect(Collectors.toCollection(ArrayList::new));
     }

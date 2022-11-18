@@ -1,11 +1,7 @@
 package dictionary;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * dictionary
@@ -13,36 +9,44 @@ import java.util.stream.Collectors;
  * Date 11/17/2022 - 11:18 PM
  * Description: ...
  */
+
+class SortByDateDescending implements Comparator<History> {
+    public int compare(History a, History b) {
+        return a.getLdt().compareTo(b.getLdt());
+    }
+}
+
+class SortByDateAscending implements Comparator<History> {
+    public int compare(History a, History b) {
+        return b.getLdt().compareTo(a.getLdt());
+    }
+}
+
 public class HistoryMap {
-    private final HashMap<History, LocalDateTime> historyMap;
+    private final ArrayList<History> historyMap;
 
     public HistoryMap() {
-        historyMap = new HashMap<>();
+        historyMap = new ArrayList<>();
     }
 
+    /**
+     * @param searchText
+     */
     public void addHistory(String searchText, boolean searchType) {
-        historyMap.put(new History(searchText, searchType), LocalDateTime.now());
+        for (int i = 0; i < historyMap.size(); i++) {
+            if (historyMap.get(i).checkEqual(searchText, searchType)) {
+                historyMap.set(i, new History(searchText, searchType));
+                return;
+            }
+        }
     }
 
-    public ArrayList<Map.Entry<History, LocalDateTime>> getHistory(boolean dateAscending) {
-        if (dateAscending) {
-            return historyMap.entrySet().stream()
-                    .sorted(new Comparator<Map.Entry<History, LocalDateTime>>() {
-                        @Override
-                        public int compare(Map.Entry<History, LocalDateTime> o1, Map.Entry<History, LocalDateTime> o2) {
-                            return o1.getValue().compareTo(o2.getValue());
-                        }
-                    })
-                    .collect(Collectors.toCollection(ArrayList::new));
-        } else {
-            return historyMap.entrySet().stream()
-                    .sorted(new Comparator<Map.Entry<History, LocalDateTime>>() {
-                        @Override
-                        public int compare(Map.Entry<History, LocalDateTime> o1, Map.Entry<History, LocalDateTime> o2) {
-                            return o2.getValue().compareTo(o1.getValue());
-                        }
-                    })
-                    .collect(Collectors.toCollection(ArrayList::new));
-        }
+    /**
+     * @param dateAscending
+     */
+    public void sortHistory(boolean dateAscending) {
+        if (dateAscending)
+            this.historyMap.sort(new SortByDateAscending());
+        else this.historyMap.sort(new SortByDateDescending());
     }
 }
