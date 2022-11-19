@@ -1,10 +1,9 @@
 package dictionary;
 
-import java.util.ArrayList;
+import java.io.*;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Random;
 
 /**
  * dictionary
@@ -14,16 +13,78 @@ import java.util.stream.Collectors;
  */
 public class Dictionary {
     private final HistoryMap historyMap = new HistoryMap();
-    /**
-     * Hash map from slang words to their definitions
-     */
+    private final HashMap<String, HashMap<String, Boolean>> indexSlang;
+    private final HashMap<String, HashMap<String, Boolean>> indexDef;
     private HashMap<String, HashSet<String>> dictionary;
 
     /**
      * Default constructor
      */
     public Dictionary() {
+        indexSlang = new HashMap<>();
+        indexDef = new HashMap<>();
         dictionary = new HashMap<>();
+    }
+
+    public void addIndexData(String word, boolean dataType) {
+        for (int i = 1; i <= word.length(); i++) {
+            String part = word.substring(0, i).toLowerCase();
+            HashMap<String, Boolean> tmpMap = dataType ? indexDef.get(part) : indexSlang.get(part);
+            if (tmpMap != null) {
+                tmpMap.putIfAbsent(word, true);
+            } else {
+                tmpMap = new HashMap<>();
+                tmpMap.put(word, true);
+                if (dataType)
+                    indexDef.put(part, tmpMap);
+                else indexSlang.put(part, tmpMap);
+            }
+        }
+    }
+
+    public void importFromFile(String filename) throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(filename));
+        String str;
+        while (true) {
+            str = br.readLine();
+            if (str == null)
+                break;
+            String[] slangAndDef = str.split("`");
+            String[] defArray = slangAndDef[1].split("(\\| )");
+            addIndexData(slangAndDef[0], false);
+            for (String def : defArray) {
+                addIndexData(def, true);
+                addSlangWord(slangAndDef[0], def, false, false);
+            }
+        }
+        exportToDataFile(filename);
+        historyMap.importFromFile("history.dat");
+    }
+
+    public void exportToDataFile(String filename) throws IOException {
+        BufferedWriter bw = new BufferedWriter(new FileWriter(filename));
+        dictionary
+                .forEach((key, value) -> {
+                    try {
+                        StringBuilder message = new StringBuilder();
+                        value.forEach(v -> {
+                            message.append(v).append("| ");
+                        });
+                        bw.write(key + "`" + message.substring(0, message.length() - 2) + "\n");
+                    } catch (IOException e) {
+                        System.out.println(e);
+                    }
+                });
+        bw.flush();
+        bw.close();
+    }
+
+    public HashMap<String, HashSet<String>> generateRandom() {
+        HashMap<String, HashSet<String>> res = new HashMap<>();
+        Object[] crunchifyKeys = dictionary.keySet().toArray();
+        Object key = crunchifyKeys[new Random().nextInt(crunchifyKeys.length)];
+        res.put(key.toString(), dictionary.get(key.toString()));
+        return res;
     }
 
     /**
@@ -42,31 +103,22 @@ public class Dictionary {
 
     /**
      * @param slang Slang word we want to search from our dictionary
-     * @return ArrayList of slang words and definitions that contain the slang parameter pass in
+     * @return Hashmap contains definitions
      */
-    public ArrayList<Map.Entry<String, HashSet<String>>> searchDefsBySlang(String slang) {
-        return dictionary
-                .entrySet()
-                .stream()
-                .filter(record -> record.getKey().toLowerCase().contains(slang.toLowerCase()))
-                .collect(Collectors.toCollection(ArrayList::new));
+    public HashMap<String, Boolean> searchDefsBySlang(String slang) throws IOException {
+        historyMap.addHistory(slang, false);
+        historyMap.exportToFile("history.dat");
+        return indexSlang.get(slang.toLowerCase());
     }
 
     /**
      * @param def Definition we want to search from our dictionary
-     * @return ArrayList of slang words and definitions that contain the def parameter pass in
+     * @return Hashmap contains slang words
      */
-    public ArrayList<Map.Entry<String, HashSet<String>>> searchSlangsByDef(String def) {
-        String[] arrOfStr = def.split(" ");
-        return dictionary
-                .entrySet()
-                .stream()
-                .filter(record -> {
-                    for (String ele : record.getValue())
-                        for (String word : arrOfStr)
-                            if (ele.equalsIgnoreCase(word)) return true;
-                    return false;
-                }).collect(Collectors.toCollection(ArrayList::new));
+    public HashMap<String, Boolean> searchSlangsByDef(String def) throws IOException {
+        historyMap.addHistory(def, true);
+        historyMap.exportToFile("history.dat");
+        return indexDef.get(def.toLowerCase());
     }
 
     /**
@@ -76,7 +128,9 @@ public class Dictionary {
      *                    the slang word's definition will be overwritten,
      *                    otherwise the definition will be duplicated
      */
-    public void addSlangWord(String slang, String def, boolean isOverwrite) {
+    public void addSlangWord(String slang, String def, boolean isOverwrite, boolean isExport) throws IOException {
+        addIndexData(def, false);
+        addIndexData(slang, true);
         HashSet<String> defsOfSlang = dictionary.get(slang);
         if (defsOfSlang != null) {
             if (isOverwrite) {
@@ -91,28 +145,68 @@ public class Dictionary {
             defsOfSlang.add(def);
             dictionary.put(slang, defsOfSlang);
         }
+        if (isExport) exportToDataFile("slang.txt");
     }
 
     /**
-     * @param slang  Slang word we want to edit
-     * @param oldDef Old definition of slang word
-     * @param newDef New definition of slang word we want to update
+     * @param oldSlang Slang word we want to edit
+     * @param newSlang Slang word to replace
+     * @param oldDef   Old definition of slang word
+     * @param newDef   New definition of slang word we want to update
      */
-    public void editSlangWord(String slang, String oldDef, String newDef) {
-        HashSet<String> defsOfSlang = dictionary.get(slang);
-        boolean result = defsOfSlang.remove(oldDef);
-        if (result) defsOfSlang.add(newDef);
+    public void editSlangWord(String oldSlang, String newSlang, String oldDef, String newDef) throws IOException {
+        for (int i = 1; i <= oldDef.length(); i++) {
+            String part = oldDef.substring(0, i).toLowerCase();
+            HashMap<String, Boolean> tmpMap = indexDef.get(part);
+            if (tmpMap != null) {
+                tmpMap.remove(oldDef);
+            }
+        }
+        for (int i = 1; i <= oldSlang.length(); i++) {
+            String part = oldSlang.substring(0, i).toLowerCase();
+            HashMap<String, Boolean> tmpMap = indexSlang.get(part);
+            if (tmpMap != null) {
+                tmpMap.remove(oldSlang);
+            }
+        }
+        addIndexData(newDef, false);
+        addIndexData(newSlang, true);
+
+        HashSet<String> defsOfSlang = dictionary.get(oldSlang);
+        if (oldSlang.equals(newSlang)) {
+            boolean result = defsOfSlang.remove(oldDef);
+            if (result) defsOfSlang.add(newDef);
+        } else {
+            dictionary.remove(oldSlang);
+            defsOfSlang = new HashSet<>();
+            defsOfSlang.add(newDef);
+            dictionary.put(newSlang, defsOfSlang);
+        }
+        exportToDataFile("slang.txt");
     }
 
     /**
      * @param slang Slang word we want to delete from our dictionary
      */
-    public void deleteSlangWord(String slang) {
+    public void deleteSlangWord(String slang) throws IOException {
+        HashSet<String> defs = dictionary.get(slang);
+        defs.forEach(def -> {
+            for (int i = 1; i <= def.length(); i++) {
+                String part = def.substring(0, i).toLowerCase();
+                HashMap<String, Boolean> tmpMap = indexDef.get(part);
+                if (tmpMap != null) {
+                    tmpMap.remove(def);
+                }
+            }
+        });
+        for (int i = 1; i <= slang.length(); i++) {
+            String part = slang.substring(0, i).toLowerCase();
+            HashMap<String, Boolean> tmpMap = indexSlang.get(part);
+            if (tmpMap != null) {
+                tmpMap.remove(slang);
+            }
+        }
         dictionary.remove(slang);
-    }
-
-    public void resetDictionary(HashMap<String, HashSet<String>> dictionary) {
-        dictionary.clear();
-        this.dictionary = dictionary;
+        exportToDataFile("slang.txt");
     }
 }

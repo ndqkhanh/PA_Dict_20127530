@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class History {
     // Searched text
     private String historySearchText;
-    // 0: search by slang, 1: search by definition
+    // false: search by slang, true: search by definition
     private boolean searchType;
     // Date & time search
     private LocalDateTime ldt;
@@ -28,6 +28,12 @@ public class History {
         ldt = LocalDateTime.now();
     }
 
+    public History(String historySearchText, boolean searchType, LocalDateTime ldt) {
+        this.historySearchText = historySearchText;
+        this.searchType = searchType;
+        this.ldt = ldt;
+    }
+
     public String getHistorySearchText() {
         return historySearchText;
     }
@@ -36,17 +42,18 @@ public class History {
         return searchType;
     }
 
-    public void setHistory(String historySearchText, boolean searchType) {
-        this.historySearchText = historySearchText;
-        this.searchType = searchType;
-    }
-
     public LocalDateTime getLdt() {
         return ldt;
     }
 
     public void setLdt(LocalDateTime ldt) {
         this.ldt = ldt;
+    }
+
+    public void setHistory(String historySearchText, boolean searchType) {
+        this.historySearchText = historySearchText;
+        this.searchType = searchType;
+        ldt = LocalDateTime.now();
     }
 
     public boolean checkEqual(String historySearchText, boolean searchType) {

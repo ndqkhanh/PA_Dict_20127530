@@ -1,5 +1,7 @@
 package dictionary;
 
+import java.io.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -29,16 +31,50 @@ public class HistoryMap {
         historyMap = new ArrayList<>();
     }
 
+    public ArrayList<History> getHistoryMap() {
+        return historyMap;
+    }
+
+    public void importFromFile(String filename) throws IOException {
+        File f = new File(filename);
+        if (!f.exists()) {
+            System.out.println("History file is not exist");
+            return;
+        }
+        BufferedReader br = new BufferedReader(new FileReader(filename));
+        String str;
+        while (true) {
+            str = br.readLine();
+            if (str == null)
+                break;
+            String[] tmp = str.split(",");
+            if (tmp.length == 3) {
+                historyMap.add(new History(tmp[0], Boolean.parseBoolean(tmp[1]), LocalDateTime.parse(tmp[2])));
+            }
+        }
+
+    }
+
+    public void exportToFile(String filename) throws IOException {
+        BufferedWriter bw = new BufferedWriter(new FileWriter(filename));
+        for (History h : historyMap) {
+            bw.write(h.getHistorySearchText() + "," + h.getSearchType() + "," + h.getLdt() + "\n");
+        }
+        bw.flush();
+        bw.close();
+    }
+
     /**
      * @param searchText
      */
     public void addHistory(String searchText, boolean searchType) {
-        for (int i = 0; i < historyMap.size(); i++) {
-            if (historyMap.get(i).checkEqual(searchText, searchType)) {
-                historyMap.set(i, new History(searchText, searchType));
+        for (History h : historyMap) {
+            if (h.checkEqual(searchText, searchType)) {
+                h.setHistory(searchText, searchType);
                 return;
             }
         }
+        historyMap.add(new History(searchText, searchType));
     }
 
     /**
