@@ -46,10 +46,6 @@ public class History {
         return ldt;
     }
 
-    public void setLdt(LocalDateTime ldt) {
-        this.ldt = ldt;
-    }
-
     public void setHistory(String historySearchText, boolean searchType) {
         this.historySearchText = historySearchText;
         this.searchType = searchType;

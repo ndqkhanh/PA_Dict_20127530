@@ -36,11 +36,6 @@ public class HistoryMap {
     }
 
     public void importFromFile(String filename) throws IOException {
-        File f = new File(filename);
-        if (!f.exists()) {
-            System.out.println("History file is not exist");
-            return;
-        }
         BufferedReader br = new BufferedReader(new FileReader(filename));
         String str;
         while (true) {
@@ -52,7 +47,7 @@ public class HistoryMap {
                 historyMap.add(new History(tmp[0], Boolean.parseBoolean(tmp[1]), LocalDateTime.parse(tmp[2])));
             }
         }
-
+        br.close();
     }
 
     public void exportToFile(String filename) throws IOException {
@@ -67,7 +62,7 @@ public class HistoryMap {
     /**
      * @param searchText
      */
-    public void addHistory(String searchText, boolean searchType) {
+    public void addHistory(String searchText, boolean searchType) throws IOException {
         for (History h : historyMap) {
             if (h.checkEqual(searchText, searchType)) {
                 h.setHistory(searchText, searchType);
@@ -75,6 +70,7 @@ public class HistoryMap {
             }
         }
         historyMap.add(new History(searchText, searchType));
+        exportToFile("history.dat");
     }
 
     /**
