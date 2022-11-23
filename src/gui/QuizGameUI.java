@@ -6,5 +6,5 @@ package gui;
  * Date 11/20/2022 - 12:19 AM
  * Description: ...
  */
-public class QuizGame {
+public class QuizGameUI {
 }
