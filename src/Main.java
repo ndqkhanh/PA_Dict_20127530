@@ -1,5 +1,7 @@
+import dictionary.Dictionary;
 import gui.FrameUI;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -9,18 +11,23 @@ import java.io.IOException;
  */
 public class Main {
     public static void main(String[] args) throws IOException {
-        FrameUI gui = new FrameUI();
-        gui.createAndShowGUI();
-//        String filename = "data.dat";
-//        Dictionary dict = new Dictionary();
-//        try {
-//            File f = new File(filename);
-//            if (!f.exists()) {
-//                filename = "slang.txt";
-//            }
-//            dict.importFromFile(filename, false, false);
-//        } catch (IOException e) {
-//            System.out.println("[ERROR]: " + e);
+        String filename = "data.dat";
+        Dictionary dict = new Dictionary();
+        try {
+            File f = new File(filename);
+            if (!f.exists()) {
+                filename = "slang.txt";
+            }
+            dict.importFromFile(filename, false, false);
+        } catch (IOException e) {
+            System.out.println("[ERROR]: " + e);
+        }
+        
+        FrameUI.createAndShowGUI(dict);
+
+//        String[][] tmp = Dictionary.convertMapToList(dict.getDictionary());
+//        for (String[] k : tmp) {
+//            System.out.println(k[0] + "`" + k[1]);
 //        }
 
 //        HashMap<String, HashMap<String, Boolean>> findHo = dict.searchBySlang("Ho");

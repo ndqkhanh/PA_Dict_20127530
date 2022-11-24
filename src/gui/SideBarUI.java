@@ -2,6 +2,8 @@ package gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * gui
@@ -11,32 +13,53 @@ import java.awt.*;
  */
 public class SideBarUI extends JPanel {
     private final String[] menuNames = {"Dictionary", "History", "On this day slang word", "Quiz"};
-    JButton dict, hist, rand, quiz;
+    JButton dictBtn, histBtn, randBtn, quizBtn;
 
-    public SideBarUI() {
+    public SideBarUI(MainFrameUI mainFrameUI) {
+        setLayout(new BorderLayout());
         JPanel dictPanel = new JPanel();
         dictPanel.setLayout(new BorderLayout());
-        dict = new JButton(menuNames[0]);
-        dict.setPreferredSize(new Dimension(200, 125));
-        dictPanel.add(dict);
+        dictBtn = new JButton(menuNames[0]);
+        dictBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mainFrameUI.setMainPane(menuNames[0]);
+            }
+        });
+        dictPanel.add(dictBtn);
 
         JPanel histPanel = new JPanel();
         histPanel.setLayout(new BorderLayout());
-        hist = new JButton(menuNames[1]);
-        hist.setPreferredSize(new Dimension(200, 125));
-        histPanel.add(hist);
+        histBtn = new JButton(menuNames[1]);
+        histBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mainFrameUI.setMainPane(menuNames[1]);
+            }
+        });
+        histPanel.add(histBtn);
 
         JPanel randPanel = new JPanel();
         randPanel.setLayout(new BorderLayout());
-        rand = new JButton(menuNames[2]);
-        rand.setPreferredSize(new Dimension(200, 125));
-        randPanel.add(rand);
+        randBtn = new JButton(menuNames[2]);
+        randBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mainFrameUI.setMainPane(menuNames[2]);
+            }
+        });
+        randPanel.add(randBtn);
 
         JPanel quizPanel = new JPanel();
         quizPanel.setLayout(new BorderLayout());
-        quiz = new JButton(menuNames[3]);
-        quiz.setPreferredSize(new Dimension(200, 125));
-        quizPanel.add(quiz);
+        quizBtn = new JButton(menuNames[3]);
+        quizBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mainFrameUI.setMainPane(menuNames[3]);
+            }
+        });
+        quizPanel.add(quizBtn);
 
         JPanel menuContainer = new JPanel();
         menuContainer.setLayout(new BorderLayout());
@@ -49,4 +72,11 @@ public class SideBarUI extends JPanel {
         menuContainer.add(menuButtons, BorderLayout.CENTER);
         add(menuContainer);
     }
+
+//    public void actionPerformed(ActionEvent e) {
+//        String strCommand = e.getActionCommand();
+//        if (strCommand.equals(menuNames[0])) {
+//
+//        }
+//    }
 }

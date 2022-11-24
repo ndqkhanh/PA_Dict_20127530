@@ -5,10 +5,10 @@ import javax.swing.*;
 /**
  * gui
  * Created by khanh
- * Date 11/20/2022 - 12:19 AM
+ * Date 11/24/2022 - 12:56 PM
  * Description: ...
  */
-public class QuizGameUI extends JPanel {
-    public QuizGameUI() {
+public class HistoryUI extends JPanel {
+    public HistoryUI() {
     }
 }

@@ -25,6 +25,23 @@ public class Dictionary {
         dictionary = new HashMap<>();
     }
 
+    public static String[][] convertMapToList(HashMap<String, HashMap<String, Boolean>> map) {
+        String[][] mainList = new String[map.size()][];
+        final int[] i = {0};
+        map.forEach((key, value) -> {
+            value.forEach((k, v) -> {
+                String[] tmp = {key, k};
+                mainList[i[0]] = tmp;
+            });
+            i[0] = i[0] + 1;
+        });
+        return mainList;
+    }
+
+    public HistoryMap getHistoryMap() {
+        return historyMap;
+    }
+
     public void addIndexSlang(String slang) {
         for (int i = 1; i <= slang.length(); i++) {
             String part = slang.substring(0, i).toLowerCase();
@@ -113,14 +130,16 @@ public class Dictionary {
                 addSlangWord(slangAndDef[0], def, false, false);
             }
         }
-        if (filename.equals("slang.txt")) exportToDataFile("data.dat");
+        if (filename.equals("slang.txt")) {
+            exportToDataFile("data.dat");
+            historyMap.exportToFile("history.dat");
+        }
         if (!importIndexFile) {
             exportIndexData("indexSlang.dat", true);
             exportIndexData("indexDef.dat", false);
         }
         if (importHistoryFile)
             historyMap.importFromFile("history.dat");
-        else historyMap.exportToFile("history.dat");
     }
 
     public void exportToDataFile(String filename) throws IOException {
@@ -224,9 +243,11 @@ public class Dictionary {
             defsOfSlang.put(def, true);
             dictionary.put(slang, defsOfSlang);
         }
-        exportIndexData("indexSlang.dat", true);
-        exportIndexData("indexDef.dat", false);
-        if (isExport) exportToDataFile("data.dat");
+        if (isExport) {
+            exportIndexData("indexSlang.dat", true);
+            exportIndexData("indexDef.dat", false);
+            exportToDataFile("data.dat");
+        }
     }
 
     /**
