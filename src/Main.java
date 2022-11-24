@@ -22,7 +22,6 @@ public class Main {
         } catch (IOException e) {
             System.out.println("[ERROR]: " + e);
         }
-        
         FrameUI.createAndShowGUI(dict);
 
 //        String[][] tmp = Dictionary.convertMapToList(dict.getDictionary());
@@ -31,6 +30,8 @@ public class Main {
 //        }
 
 //        HashMap<String, HashMap<String, Boolean>> findHo = dict.searchBySlang("Ho");
+//        findHo = dict.searchBySlang("AB");
+//        findHo = dict.searchByDef("BACK");
 //        if (findHo != null)
 //            findHo.forEach((key, value) -> value.forEach((k, v) -> {
 //                System.out.println(key + ": " + k);

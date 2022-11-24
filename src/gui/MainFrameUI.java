@@ -4,6 +4,7 @@ import dictionary.Dictionary;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 /**
  * gui
@@ -18,14 +19,10 @@ public class MainFrameUI extends JPanel {
     RandomSlangUI randomSlangUI;
     QuizGameUI quizUI;
 
-    public MainFrameUI(Dictionary dict) {
+    public MainFrameUI(Dictionary dict) throws IOException {
         setLayout(new BorderLayout());
-        dictUI = new DictionaryUI(dict);
-        histUI = new HistoryUI();
-        randomSlangUI = new RandomSlangUI();
-        quizUI = new QuizGameUI();
         mainPane = new JScrollPane();
-        setMainPane("Dictionary");
+        setMainPane("Dictionary", dict);
         add(mainPane, BorderLayout.CENTER);
     }
 
@@ -33,18 +30,23 @@ public class MainFrameUI extends JPanel {
         return dictUI;
     }
 
-    public void setMainPane(String str) {
+    public void setMainPane(String str, Dictionary dict) throws IOException {
         switch (str) {
             case "Dictionary":
+                dictUI = new DictionaryUI(dict);
                 mainPane.setViewportView(dictUI);
                 break;
             case "History":
+                dict.getHistoryMap().importFromFile("history.dat");
+                histUI = new HistoryUI(dict.getHistoryMap().getHistoryMap());
                 mainPane.setViewportView(histUI);
                 break;
             case "On this day slang word":
+                randomSlangUI = new RandomSlangUI();
                 mainPane.setViewportView(randomSlangUI);
                 break;
             case "Quiz":
+                quizUI = new QuizGameUI();
                 mainPane.setViewportView(quizUI);
                 break;
         }

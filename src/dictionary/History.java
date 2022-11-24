@@ -1,6 +1,7 @@
 package dictionary;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * dictionary
@@ -44,6 +45,11 @@ public class History {
 
     public LocalDateTime getLdt() {
         return ldt;
+    }
+
+    public String getFormatLdt() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return ldt.format(formatter);
     }
 
     public void setHistory(String historySearchText, boolean searchType) {

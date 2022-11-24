@@ -1,6 +1,7 @@
 package dictionary;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -11,7 +12,7 @@ import java.util.Random;
  * Description: ...
  */
 public class Dictionary {
-    private final HistoryMap historyMap = new HistoryMap();
+    private final HistoryMap historyMap;
     private final HashMap<String, HashMap<String, Boolean>> indexSlang;
     private final HashMap<String, HashMap<String, Boolean>> indexDef;
     private HashMap<String, HashMap<String, Boolean>> dictionary;
@@ -20,22 +21,27 @@ public class Dictionary {
      * Default constructor
      */
     public Dictionary() {
+        historyMap = new HistoryMap();
         indexSlang = new HashMap<>();
         indexDef = new HashMap<>();
         dictionary = new HashMap<>();
     }
 
     public static String[][] convertMapToList(HashMap<String, HashMap<String, Boolean>> map) {
-        String[][] mainList = new String[map.size()][];
-        final int[] i = {0};
+        ArrayList<String[]> mainList = new ArrayList<>();
         map.forEach((key, value) -> {
             value.forEach((k, v) -> {
                 String[] tmp = {key, k};
-                mainList[i[0]] = tmp;
+                mainList.add(tmp);
             });
+        });
+        String[][] resList = new String[mainList.size()][];
+        final int[] i = {0};
+        mainList.forEach(line -> {
+            resList[i[0]] = line;
             i[0] = i[0] + 1;
         });
-        return mainList;
+        return resList;
     }
 
     public HistoryMap getHistoryMap() {
@@ -112,6 +118,7 @@ public class Dictionary {
      * @throws IOException
      */
     public void importFromFile(String filename, boolean importIndexFile, boolean importHistoryFile) throws IOException {
+        dictionary = new HashMap<>();
         if (importIndexFile) {
             importIndexData("indexSlang.dat", true);
             importIndexData("indexDef.dat", false);
@@ -190,6 +197,7 @@ public class Dictionary {
      * @return Hashmap contains definitions
      */
     public HashMap<String, HashMap<String, Boolean>> searchBySlang(String slang) throws IOException {
+        if (slang.equals("")) return dictionary;
         historyMap.addHistory(slang, false);
         HashMap<String, HashMap<String, Boolean>> res = new HashMap<>();
         HashMap<String, Boolean> slangs = indexSlang.get(slang.toLowerCase());
@@ -205,6 +213,7 @@ public class Dictionary {
      * @return Hashmap contains slang words
      */
     public HashMap<String, HashMap<String, Boolean>> searchByDef(String def) throws IOException {
+        if (def.equals("")) return dictionary;
         historyMap.addHistory(def, true);
         HashMap<String, HashMap<String, Boolean>> res = new HashMap<>();
         HashMap<String, Boolean> defs = indexDef.get(def.toLowerCase());

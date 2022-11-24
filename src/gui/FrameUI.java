@@ -4,6 +4,7 @@ import dictionary.Dictionary;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 /**
  * gui
@@ -16,9 +17,9 @@ public class FrameUI extends JPanel {
     SideBarUI sideBarUI;
     MainFrameUI mainFrameUI;
 
-    public FrameUI(Dictionary dict) {
+    public FrameUI(Dictionary dict) throws IOException {
         mainFrameUI = new MainFrameUI(dict);
-        sideBarUI = new SideBarUI(mainFrameUI);
+        sideBarUI = new SideBarUI(mainFrameUI, dict);
         splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
                 sideBarUI, mainFrameUI);
         splitPane.setPreferredSize(new Dimension(1080, 570));
@@ -26,7 +27,7 @@ public class FrameUI extends JPanel {
         splitPane.setDividerLocation(210);
     }
 
-    public static void createAndShowGUI(Dictionary dict) {
+    public static void createAndShowGUI(Dictionary dict) throws IOException {
         // Make sure we have nice window decorations.
         JFrame.setDefaultLookAndFeelDecorated(true);
 

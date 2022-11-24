@@ -1,9 +1,12 @@
 package gui;
 
+import dictionary.Dictionary;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 /**
  * gui
@@ -15,7 +18,7 @@ public class SideBarUI extends JPanel {
     private final String[] menuNames = {"Dictionary", "History", "On this day slang word", "Quiz"};
     JButton dictBtn, histBtn, randBtn, quizBtn;
 
-    public SideBarUI(MainFrameUI mainFrameUI) {
+    public SideBarUI(MainFrameUI mainFrameUI, Dictionary dict) {
         setLayout(new BorderLayout());
         JPanel dictPanel = new JPanel();
         dictPanel.setLayout(new BorderLayout());
@@ -23,7 +26,11 @@ public class SideBarUI extends JPanel {
         dictBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                mainFrameUI.setMainPane(menuNames[0]);
+                try {
+                    mainFrameUI.setMainPane(menuNames[0], dict);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
         dictPanel.add(dictBtn);
@@ -34,7 +41,11 @@ public class SideBarUI extends JPanel {
         histBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                mainFrameUI.setMainPane(menuNames[1]);
+                try {
+                    mainFrameUI.setMainPane(menuNames[1], dict);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
         histPanel.add(histBtn);
@@ -45,7 +56,11 @@ public class SideBarUI extends JPanel {
         randBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                mainFrameUI.setMainPane(menuNames[2]);
+                try {
+                    mainFrameUI.setMainPane(menuNames[2], dict);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
         randPanel.add(randBtn);
@@ -56,7 +71,11 @@ public class SideBarUI extends JPanel {
         quizBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                mainFrameUI.setMainPane(menuNames[3]);
+                try {
+                    mainFrameUI.setMainPane(menuNames[3], dict);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
         quizPanel.add(quizBtn);
@@ -72,11 +91,4 @@ public class SideBarUI extends JPanel {
         menuContainer.add(menuButtons, BorderLayout.CENTER);
         add(menuContainer);
     }
-
-//    public void actionPerformed(ActionEvent e) {
-//        String strCommand = e.getActionCommand();
-//        if (strCommand.equals(menuNames[0])) {
-//
-//        }
-//    }
 }
