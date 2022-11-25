@@ -413,7 +413,7 @@ public class DictionaryUI extends JPanel {
                     } else {
                         JOptionPane.showMessageDialog(null,
                                 "[FAILED]: Please choose one row in the table to edit", "Alert",
-                                JOptionPane.WARNING_MESSAGE);
+                                JOptionPane.ERROR_MESSAGE);
                     }
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
@@ -458,7 +458,7 @@ public class DictionaryUI extends JPanel {
                     } else {
                         JOptionPane.showMessageDialog(null,
                                 "[FAILED]: Please choose one row in the table to delete", "Alert",
-                                JOptionPane.WARNING_MESSAGE);
+                                JOptionPane.ERROR_MESSAGE);
                     }
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
