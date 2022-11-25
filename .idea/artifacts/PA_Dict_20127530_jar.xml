@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="PA_Dict_20127530:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/PA_Dict_20127530_jar</output-path>
+    <root id="archive" name="PA_Dict_20127530.jar">
+      <element id="module-output" name="PA_Dict_20127530" />
+    </root>
+  </artifact>
+</component>

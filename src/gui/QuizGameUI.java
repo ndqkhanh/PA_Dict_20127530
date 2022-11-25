@@ -28,6 +28,14 @@ public class QuizGameUI extends JPanel {
         setLayout(new BorderLayout());
         JPanel quizPanel = new JPanel(new BorderLayout());
         quizType = new JComboBox<>(types);
+        quizType.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (stopButton.isEnabled()) {
+                    setNextQuestion(dict, Objects.equals(quizType.getSelectedItem(), types[0]));
+                }
+            }
+        });
         quizType.setSelectedItem(0);
         quizType.setSize(new Dimension(100, 30));
         JPanel labelContainPanel = new JPanel();
