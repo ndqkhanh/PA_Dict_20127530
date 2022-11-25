@@ -494,7 +494,9 @@ public class DictionaryUI extends JPanel {
         // Column Names
         String[] columnNames = {"Slang", "Definition"};
         dictTable = new JTable(new MyTableModel(data, columnNames));
+        dictTable.setRowHeight(20);
         dictTable.setSelectionModel(new ForcedListSelectionModel());
+        dictTable.getTableHeader().setReorderingAllowed(false);
         // adding it to JScrollPane
         JScrollPane dictSp = new JScrollPane(dictTable);
 

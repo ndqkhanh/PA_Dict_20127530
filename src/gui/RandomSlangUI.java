@@ -24,6 +24,8 @@ public class RandomSlangUI extends JPanel {
         String[] columnNames = {"Slang", "Definition"};
         randDictTable = new JTable(new MyTableModel(data, columnNames));
         randDictTable.setSelectionModel(new ForcedListSelectionModel());
+        randDictTable.getTableHeader().setReorderingAllowed(false);
+        randDictTable.setRowHeight(80);
         // adding it to JScrollPane
         JScrollPane dictSp = new JScrollPane(randDictTable);
 

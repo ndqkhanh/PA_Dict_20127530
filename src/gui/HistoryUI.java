@@ -23,6 +23,8 @@ public class HistoryUI extends JPanel {
         // Column Names
         String[] columnNames = {"Slang", "Definition"};
         histTable = new JTable(new MyTableModel(historyList, columnNames));
+        histTable.getTableHeader().setReorderingAllowed(false);
+        histTable.setRowHeight(20);
         // adding it to JScrollPane
         JScrollPane dictSp = new JScrollPane(histTable);
 
