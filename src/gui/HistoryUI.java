@@ -32,7 +32,16 @@ public class HistoryUI extends JPanel {
         histTable = new JTable(new MyTableModel(historyList, columnNames));
         // adding it to JScrollPane
         JScrollPane dictSp = new JScrollPane(histTable);
+
+        JPanel headerContainer = new JPanel();
+        JPanel header = new JPanel();
+        header.setLayout(new BoxLayout(header, BoxLayout.Y_AXIS));
+        header.add(Box.createRigidArea(new Dimension(0, 10)));
+        header.add(new JLabel("SEARCHED HISTORY"));
+        header.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        headerContainer.add(header);
         add(dictSp, BorderLayout.CENTER);
-        add(Box.createRigidArea(new Dimension(0, 10)), BorderLayout.PAGE_START);
+        add(headerContainer, BorderLayout.PAGE_START);
     }
 }

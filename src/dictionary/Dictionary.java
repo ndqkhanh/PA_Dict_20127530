@@ -13,8 +13,8 @@ import java.util.Random;
  */
 public class Dictionary {
     private final HistoryMap historyMap;
-    private final HashMap<String, HashMap<String, Boolean>> indexSlang;
-    private final HashMap<String, HashMap<String, Boolean>> indexDef;
+    private HashMap<String, HashMap<String, Boolean>> indexSlang;
+    private HashMap<String, HashMap<String, Boolean>> indexDef;
     private HashMap<String, HashMap<String, Boolean>> dictionary;
 
     /**
@@ -64,7 +64,10 @@ public class Dictionary {
 
     public void addIndexDef(String def) {
         String[] parts = def.toLowerCase().split(" ");
-        for (String part : parts) {
+        StringBuilder tmp = new StringBuilder();
+        for (String s : parts) {
+            tmp.append(s).append(" ");
+            String part = tmp.substring(0, tmp.length() - 1);
             HashMap<String, Boolean> tmpMap = indexDef.get(part);
             if (tmpMap != null) {
                 tmpMap.putIfAbsent(def, true);
@@ -83,7 +86,7 @@ public class Dictionary {
             str = br.readLine();
             if (str == null)
                 break;
-            String[] parts = str.split(" ", 2);
+            String[] parts = str.split("`", 2);
             String[] values = parts[1].split("`");
             HashMap<String, Boolean> tmpMap = new HashMap<>();
             for (String v : values)
@@ -99,10 +102,12 @@ public class Dictionary {
         (isSlangIndex ? indexSlang : indexDef).forEach((key, value) -> {
             try {
                 StringBuilder message = new StringBuilder();
-                value.forEach((k, v) -> {
-                    message.append(k).append("`");
-                });
-                bw.write(key + " " + message.substring(0, message.length() - 1) + "\n");
+                if (!value.isEmpty()) {
+                    value.forEach((k, v) -> {
+                        message.append(k).append("`");
+                    });
+                    bw.write(key + "`" + message.substring(0, message.length() - 1) + "\n");
+                }
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
@@ -119,6 +124,8 @@ public class Dictionary {
      */
     public void importFromFile(String filename, boolean importIndexFile, boolean importHistoryFile) throws IOException {
         dictionary = new HashMap<>();
+        indexSlang = new HashMap<>();
+        indexDef = new HashMap<>();
         if (importIndexFile) {
             importIndexData("indexSlang.dat", true);
             importIndexData("indexDef.dat", false);
@@ -265,11 +272,15 @@ public class Dictionary {
      */
     public void editSlang(String oldSlang, String newSlang) throws IOException {
         if (oldSlang.equals(newSlang)) return;
+        System.out.println("1");
         for (int i = 1; i <= oldSlang.length(); i++) {
             String part = oldSlang.substring(0, i).toLowerCase();
             HashMap<String, Boolean> tmpMap = indexSlang.get(part);
             if (tmpMap != null) {
                 tmpMap.remove(oldSlang);
+                if (tmpMap.isEmpty()) {
+                    indexSlang.remove(part);
+                }
             }
         }
         addIndexSlang(newSlang);
@@ -293,6 +304,9 @@ public class Dictionary {
             HashMap<String, Boolean> tmpMap = indexDef.get(part);
             if (tmpMap != null) {
                 tmpMap.remove(oldDef);
+                if (tmpMap.isEmpty()) {
+                    indexDef.remove(part);
+                }
             }
         }
         addIndexDef(newDef);

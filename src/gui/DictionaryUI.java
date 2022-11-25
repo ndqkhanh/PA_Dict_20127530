@@ -376,9 +376,8 @@ public class DictionaryUI extends JPanel {
                 };
                 try {
                     if (dictTable.getSelectedRow() != -1) {
-                        EditModal slangModal = new EditModal(true, dictTable);
-                        EditModal defModal = new EditModal(false, dictTable);
                         if (Objects.equals(searchType.getSelectedItem(), "Slang")) {
+                            EditModal slangModal = new EditModal(true, dictTable);
                             int result = JOptionPane.showOptionDialog(null, slangModal,
                                     "Alert", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,
                                     null, options, null);
@@ -389,6 +388,7 @@ public class DictionaryUI extends JPanel {
                                             JOptionPane.WARNING_MESSAGE);
                                 } else {
                                     dict.editSlang(slangModal.getOldField().getText(), slangModal.getNewField().getText());
+                                    System.out.println("out");
                                     JOptionPane.showMessageDialog(null,
                                             "[SUCCESS]: Edit slang successfully", "Alert",
                                             JOptionPane.WARNING_MESSAGE);
@@ -396,6 +396,7 @@ public class DictionaryUI extends JPanel {
                                 }
                             }
                         } else {
+                            EditModal defModal = new EditModal(false, dictTable);
                             int result = JOptionPane.showOptionDialog(null, defModal,
                                     "Alert", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,
                                     null, options, null);
@@ -405,7 +406,8 @@ public class DictionaryUI extends JPanel {
                                             "[ALERT]: The new value is required!!!\nPlease type again!!!", "Alert",
                                             JOptionPane.WARNING_MESSAGE);
                                 } else {
-                                    dict.editSlang(defModal.getOldField().getText(), defModal.getNewField().getText());
+                                    dict.editDef(dictTable.getValueAt(dictTable.getSelectedRow(), 0).toString(),
+                                            defModal.getOldField().getText(), defModal.getNewField().getText());
                                     JOptionPane.showMessageDialog(null,
                                             "[SUCCESS]: Edit definition successfully", "Alert",
                                             JOptionPane.WARNING_MESSAGE);
