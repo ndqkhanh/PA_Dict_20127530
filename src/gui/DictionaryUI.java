@@ -439,13 +439,22 @@ public class DictionaryUI extends JPanel {
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                String[] options = new String[]{
+                        "Delete",
+                        "Cancel"
+                };
                 try {
                     if (dictTable.getSelectedRow() != -1) {
-                        dict.deleteSlangWord(dictTable.getValueAt(dictTable.getSelectedRow(), 0).toString());
-                        JOptionPane.showMessageDialog(null,
-                                "[SUCCESS]: Delete slang word successfully", "Alert",
-                                JOptionPane.INFORMATION_MESSAGE);
-                        getBackDict();
+                        int result = JOptionPane.showOptionDialog(null, "Are you sure you want to delete this slang?",
+                                "Alert", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,
+                                null, options, null);
+                        if (result == 0) {
+                            dict.deleteSlangWord(dictTable.getValueAt(dictTable.getSelectedRow(), 0).toString());
+                            JOptionPane.showMessageDialog(null,
+                                    "[SUCCESS]: Delete slang word successfully", "Alert",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                            getBackDict();
+                        }
                     } else {
                         JOptionPane.showMessageDialog(null,
                                 "[FAILED]: Please choose one row in the table to delete", "Alert",
