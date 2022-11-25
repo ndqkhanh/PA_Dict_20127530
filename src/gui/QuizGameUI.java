@@ -68,10 +68,21 @@ public class QuizGameUI extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (checkCorrectAnswer(A.getText(), Objects.equals(quizType.getSelectedItem(), types[0]))) {
+                    A.setBackground(Color.GREEN);
                     JOptionPane.showMessageDialog(null,
                             "You are so excellent :)", "Alert",
                             JOptionPane.INFORMATION_MESSAGE);
                 } else {
+                    if (checkCorrectAnswer(B.getText(), Objects.equals(quizType.getSelectedItem(), types[0]))) {
+                        B.setBackground(Color.GREEN);
+                    }
+                    if (checkCorrectAnswer(C.getText(), Objects.equals(quizType.getSelectedItem(), types[0]))) {
+                        C.setBackground(Color.GREEN);
+                    }
+                    if (checkCorrectAnswer(D.getText(), Objects.equals(quizType.getSelectedItem(), types[0]))) {
+                        D.setBackground(Color.GREEN);
+                    }
+                    A.setBackground(Color.RED);
                     JOptionPane.showMessageDialog(null,
                             "Better luck next time :(", "Alert",
                             JOptionPane.INFORMATION_MESSAGE);
@@ -85,10 +96,21 @@ public class QuizGameUI extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (checkCorrectAnswer(B.getText(), Objects.equals(quizType.getSelectedItem(), types[0]))) {
+                    B.setBackground(Color.GREEN);
                     JOptionPane.showMessageDialog(null,
                             "You are so excellent :)", "Alert",
                             JOptionPane.INFORMATION_MESSAGE);
                 } else {
+                    if (checkCorrectAnswer(A.getText(), Objects.equals(quizType.getSelectedItem(), types[0]))) {
+                        A.setBackground(Color.GREEN);
+                    }
+                    if (checkCorrectAnswer(C.getText(), Objects.equals(quizType.getSelectedItem(), types[0]))) {
+                        C.setBackground(Color.GREEN);
+                    }
+                    if (checkCorrectAnswer(D.getText(), Objects.equals(quizType.getSelectedItem(), types[0]))) {
+                        D.setBackground(Color.GREEN);
+                    }
+                    B.setBackground(Color.RED);
                     JOptionPane.showMessageDialog(null,
                             "Better luck next time :(", "Alert",
                             JOptionPane.INFORMATION_MESSAGE);
@@ -102,10 +124,21 @@ public class QuizGameUI extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (checkCorrectAnswer(C.getText(), Objects.equals(quizType.getSelectedItem(), types[0]))) {
+                    C.setBackground(Color.GREEN);
                     JOptionPane.showMessageDialog(null,
                             "You are so excellent :)", "Alert",
                             JOptionPane.INFORMATION_MESSAGE);
                 } else {
+                    if (checkCorrectAnswer(A.getText(), Objects.equals(quizType.getSelectedItem(), types[0]))) {
+                        A.setBackground(Color.GREEN);
+                    }
+                    if (checkCorrectAnswer(B.getText(), Objects.equals(quizType.getSelectedItem(), types[0]))) {
+                        B.setBackground(Color.GREEN);
+                    }
+                    if (checkCorrectAnswer(D.getText(), Objects.equals(quizType.getSelectedItem(), types[0]))) {
+                        D.setBackground(Color.GREEN);
+                    }
+                    C.setBackground(Color.RED);
                     JOptionPane.showMessageDialog(null,
                             "Better luck next time :(", "Alert",
                             JOptionPane.INFORMATION_MESSAGE);
@@ -119,10 +152,21 @@ public class QuizGameUI extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (checkCorrectAnswer(D.getText(), Objects.equals(quizType.getSelectedItem(), types[0]))) {
+                    D.setBackground(Color.GREEN);
                     JOptionPane.showMessageDialog(null,
                             "You are so excellent :)", "Alert",
                             JOptionPane.INFORMATION_MESSAGE);
                 } else {
+                    D.setBackground(Color.RED);
+                    if (checkCorrectAnswer(A.getText(), Objects.equals(quizType.getSelectedItem(), types[0]))) {
+                        A.setBackground(Color.GREEN);
+                    }
+                    if (checkCorrectAnswer(B.getText(), Objects.equals(quizType.getSelectedItem(), types[0]))) {
+                        B.setBackground(Color.GREEN);
+                    }
+                    if (checkCorrectAnswer(C.getText(), Objects.equals(quizType.getSelectedItem(), types[0]))) {
+                        C.setBackground(Color.GREEN);
+                    }
                     JOptionPane.showMessageDialog(null,
                             "Better luck next time :(", "Alert",
                             JOptionPane.INFORMATION_MESSAGE);
@@ -216,6 +260,10 @@ public class QuizGameUI extends JPanel {
     }
 
     public void setNextQuestion(Dictionary dict, boolean isSlangType) {
+        A.setBackground(new JButton().getBackground());
+        B.setBackground(new JButton().getBackground());
+        C.setBackground(new JButton().getBackground());
+        D.setBackground(new JButton().getBackground());
         curQuiz = dict.generateRandom();
         ArrayList<String> answers = isSlangType ?
                 dict.generateNewQuiz(curQuiz, true) :
