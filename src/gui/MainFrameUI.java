@@ -37,8 +37,7 @@ public class MainFrameUI extends JPanel {
                 mainPane.setViewportView(dictUI);
                 break;
             case "History":
-                dict.getHistoryMap().importFromFile("history.dat");
-                histUI = new HistoryUI(dict.getHistoryMap().getHistoryMap());
+                histUI = new HistoryUI(dict);
                 mainPane.setViewportView(histUI);
                 break;
             case "On this day slang word":

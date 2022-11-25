@@ -1,10 +1,9 @@
 package gui;
 
-import dictionary.History;
+import dictionary.Dictionary;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 /**
  * gui
@@ -17,18 +16,12 @@ public class HistoryUI extends JPanel {
     JTable histTable;
     String[][] historyList;
 
-    public HistoryUI(ArrayList<History> historyMap) {
+    public HistoryUI(Dictionary dict) {
         setLayout(new BorderLayout());
-        historyList = new String[historyMap.size()][];
-        final int[] i = {0};
-        for (History h : historyMap) {
-            String[] tmp = {h.getFormatLdt(), h.getHistorySearchText(), h.getSearchType() ? "Definition" : "Slang"};
-            historyList[i[0]] = tmp;
-            i[0] = i[0] + 1;
-        }
+        historyList = Dictionary.convertMapToList(dict.getHistoryMap());
 
         // Column Names
-        String[] columnNames = {"Updated Date", "Searched Words", "Type"};
+        String[] columnNames = {"Slang", "Definition"};
         histTable = new JTable(new MyTableModel(historyList, columnNames));
         // adding it to JScrollPane
         JScrollPane dictSp = new JScrollPane(histTable);

@@ -10,7 +10,7 @@ import java.util.*;
  * Description: ...
  */
 public class Dictionary {
-    private HistoryMap historyMap;
+    private HashMap<String, HashMap<String, Boolean>> historyMap;
     private HashMap<String, HashMap<String, Boolean>> indexSlang;
     private HashMap<String, HashMap<String, Boolean>> indexDef;
     private HashMap<String, HashMap<String, Boolean>> dictionary;
@@ -19,7 +19,7 @@ public class Dictionary {
      * Default constructor
      */
     public Dictionary() {
-        historyMap = new HistoryMap();
+        historyMap = new HashMap<>();
         indexSlang = new HashMap<>();
         indexDef = new HashMap<>();
         dictionary = new HashMap<>();
@@ -40,10 +40,6 @@ public class Dictionary {
             i[0] = i[0] + 1;
         });
         return resList;
-    }
-
-    public HistoryMap getHistoryMap() {
-        return historyMap;
     }
 
     public void addIndexSlang(String slang) {
@@ -120,14 +116,18 @@ public class Dictionary {
      * @param importHistoryFile
      * @throws IOException
      */
-    public void importFromFile(String filename, boolean importIndexFile, boolean importHistoryFile) throws IOException {
+    public void importFromFile(String filename, boolean importIndexFile) throws IOException {
         dictionary = new HashMap<>();
         indexSlang = new HashMap<>();
         indexDef = new HashMap<>();
-        historyMap = new HistoryMap();
+        historyMap = new HashMap<>();
         if (importIndexFile) {
             importIndexData("indexSlang.dat", true);
             importIndexData("indexDef.dat", false);
+        }
+        File f = new File("history.dat");
+        if (f.exists()) {
+            importFromHistoryFile("history.dat");
         }
         BufferedReader br = new BufferedReader(new FileReader(filename));
         String str;
@@ -145,19 +145,58 @@ public class Dictionary {
         }
         if (filename.equals("slang.txt")) {
             exportToDataFile("data.dat");
-            historyMap.exportToFile("history.dat");
+            exportToHistoryFile("history.dat");
         }
         if (!importIndexFile) {
             exportIndexData("indexSlang.dat", true);
             exportIndexData("indexDef.dat", false);
         }
-        if (importHistoryFile)
-            historyMap.importFromFile("history.dat");
+    }
+
+
+    public void importFromHistoryFile(String filename) throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(filename));
+        String str;
+        while (true) {
+            str = br.readLine();
+            if (str == null)
+                break;
+            String[] slangAndDef = str.split("`");
+            String[] defArray = slangAndDef[1].split("(\\| )");
+            for (String def : defArray) {
+                HashMap<String, Boolean> defsOfSlang = historyMap.get(slangAndDef[0]);
+                if (defsOfSlang != null) {
+                    defsOfSlang.put(def, true);
+                } else {
+                    defsOfSlang = new HashMap<>();
+                    defsOfSlang.put(def, true);
+                    historyMap.put(slangAndDef[0], defsOfSlang);
+                }
+            }
+        }
     }
 
     public void exportToDataFile(String filename) throws IOException {
         BufferedWriter bw = new BufferedWriter(new FileWriter(filename));
         dictionary
+                .forEach((key, value) -> {
+                    try {
+                        StringBuilder message = new StringBuilder();
+                        value.forEach((k, v) -> {
+                            message.append(k).append("| ");
+                        });
+                        bw.write(key + "`" + message.substring(0, message.length() - 2) + "\n");
+                    } catch (IOException e) {
+                        System.out.println(e.getMessage());
+                    }
+                });
+        bw.flush();
+        bw.close();
+    }
+
+    public void exportToHistoryFile(String filename) throws IOException {
+        BufferedWriter bw = new BufferedWriter(new FileWriter(filename));
+        historyMap
                 .forEach((key, value) -> {
                     try {
                         StringBuilder message = new StringBuilder();
@@ -218,6 +257,10 @@ public class Dictionary {
         return res;
     }
 
+    public HashMap<String, HashMap<String, Boolean>> getHistoryMap() {
+        return historyMap;
+    }
+
     /**
      * @return A dictionary list with slang words and their definitions
      */
@@ -238,13 +281,14 @@ public class Dictionary {
      */
     public HashMap<String, HashMap<String, Boolean>> searchBySlang(String slang) throws IOException {
         if (slang.equals("")) return dictionary;
-        historyMap.addHistory(slang, false);
         HashMap<String, HashMap<String, Boolean>> res = new HashMap<>();
         HashMap<String, Boolean> slangs = indexSlang.get(slang.toLowerCase());
         if (slangs != null)
             slangs.forEach((key, value) -> {
                 res.put(key, dictionary.get(key));
             });
+        historyMap.putAll(res);
+        exportToHistoryFile("history.dat");
         return res;
     }
 
@@ -254,7 +298,6 @@ public class Dictionary {
      */
     public HashMap<String, HashMap<String, Boolean>> searchByDef(String def) throws IOException {
         if (def.equals("")) return dictionary;
-        historyMap.addHistory(def, true);
         HashMap<String, HashMap<String, Boolean>> res = new HashMap<>();
         HashMap<String, Boolean> defs = indexDef.get(def.toLowerCase());
         if (defs != null)
@@ -265,6 +308,8 @@ public class Dictionary {
                     }
                 });
             });
+        historyMap.putAll(res);
+        exportToHistoryFile("history.dat");
         return res;
     }
 
@@ -305,7 +350,6 @@ public class Dictionary {
      */
     public void editSlang(String oldSlang, String newSlang) throws IOException {
         if (oldSlang.equals(newSlang)) return;
-        System.out.println("1");
         for (int i = 1; i <= oldSlang.length(); i++) {
             String part = oldSlang.substring(0, i).toLowerCase();
             HashMap<String, Boolean> tmpMap = indexSlang.get(part);

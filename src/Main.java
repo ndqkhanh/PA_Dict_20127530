@@ -15,50 +15,14 @@ public class Main {
         Dictionary dict = new Dictionary();
         try {
             File f = new File(filename);
-            if (!f.exists()) {
+            if (!f.exists())
                 filename = "slang.txt";
-            }
-            dict.importFromFile(filename, false, false);
+            File f2 = new File("indexSlang.dat");
+            File f3 = new File("indexDef.dat");
+            dict.importFromFile(filename, f2.exists() && f3.exists());
         } catch (IOException e) {
             System.out.println("[ERROR]: " + e);
         }
         FrameUI.createAndShowGUI(dict);
-
-//        String[][] tmp = Dictionary.convertMapToList(dict.getDictionary());
-//        for (String[] k : tmp) {
-//            System.out.println(k[0] + "`" + k[1]);
-//        }
-
-//        HashMap<String, HashMap<String, Boolean>> findHo = dict.searchBySlang("Ho");
-//        findHo = dict.searchBySlang("AB");
-//        findHo = dict.searchByDef("BACK");
-//        if (findHo != null)
-//            findHo.forEach((key, value) -> value.forEach((k, v) -> {
-//                System.out.println(key + ": " + k);
-//            }));
-//        System.out.println();
-//        findHo = dict.searchBySlang("AB");
-//        if (findHo != null)
-//            findHo.forEach((key, value) -> value.forEach((k, v) -> {
-//                System.out.println(key + ": " + k);
-//            }));
-//        System.out.println();
-//        findHo = dict.searchByDef("BACK");
-//        if (findHo != null)
-//            findHo.forEach((key, value) -> value.forEach((k, v) -> {
-//                System.out.println(key + ": " + k);
-//            }));
-//        System.out.println();
-//        findHo = dict.searchDefsBySlang("^");
-//        findHo.forEach((k, v) -> System.out.println(k));
-//        System.out.println();
-//        findHo = dict.searchDefsBySlang(".");
-//        findHo.forEach((k, v) -> System.out.println(k));
-//        System.out.println();
-
-
-//
-
-
     }
 }

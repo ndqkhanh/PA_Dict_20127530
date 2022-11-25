@@ -182,10 +182,6 @@ class MyTableModel extends AbstractTableModel {
         this.data = data;
     }
 
-    public void setColumnNames(String[] columnNames) {
-        this.columnNames = columnNames;
-    }
-
     public int getColumnCount() {
         return columnNames.length;
     }
@@ -388,7 +384,6 @@ public class DictionaryUI extends JPanel {
                                             JOptionPane.WARNING_MESSAGE);
                                 } else {
                                     dict.editSlang(slangModal.getOldField().getText(), slangModal.getNewField().getText());
-                                    System.out.println("out");
                                     JOptionPane.showMessageDialog(null,
                                             "[SUCCESS]: Edit slang successfully", "Alert",
                                             JOptionPane.INFORMATION_MESSAGE);
@@ -466,7 +461,7 @@ public class DictionaryUI extends JPanel {
         resetBtn.setPreferredSize(new Dimension(100, 40));
         resetBtn.addActionListener(new ActionListener() {
             public void getBackDict() throws IOException {
-                dict.importFromFile("slang.txt", false, false);
+                dict.importFromFile("slang.txt", false);
                 String[] columnNames = {"Slang", "Definition"};
                 String[][] data = Dictionary.convertMapToList(dict.getDictionary());
                 MyTableModel tbModel = new MyTableModel(data, columnNames);
