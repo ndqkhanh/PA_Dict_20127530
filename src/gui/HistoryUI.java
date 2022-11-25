@@ -36,9 +36,9 @@ public class HistoryUI extends JPanel {
         JPanel headerContainer = new JPanel();
         JPanel header = new JPanel();
         header.setLayout(new BoxLayout(header, BoxLayout.Y_AXIS));
-        header.add(Box.createRigidArea(new Dimension(0, 10)));
+        header.add(Box.createRigidArea(new Dimension(0, 20)));
         header.add(new JLabel("SEARCHED HISTORY"));
-        header.add(Box.createRigidArea(new Dimension(0, 10)));
+        header.add(Box.createRigidArea(new Dimension(0, 20)));
 
         headerContainer.add(header);
         add(dictSp, BorderLayout.CENTER);

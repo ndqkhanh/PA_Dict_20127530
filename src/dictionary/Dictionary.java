@@ -12,7 +12,7 @@ import java.util.Random;
  * Description: ...
  */
 public class Dictionary {
-    private final HistoryMap historyMap;
+    private HistoryMap historyMap;
     private HashMap<String, HashMap<String, Boolean>> indexSlang;
     private HashMap<String, HashMap<String, Boolean>> indexDef;
     private HashMap<String, HashMap<String, Boolean>> dictionary;
@@ -126,6 +126,7 @@ public class Dictionary {
         dictionary = new HashMap<>();
         indexSlang = new HashMap<>();
         indexDef = new HashMap<>();
+        historyMap = new HistoryMap();
         if (importIndexFile) {
             importIndexData("indexSlang.dat", true);
             importIndexData("indexDef.dat", false);

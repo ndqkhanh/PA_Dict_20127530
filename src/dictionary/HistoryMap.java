@@ -25,7 +25,7 @@ class SortByDateAscending implements Comparator<History> {
 }
 
 public class HistoryMap {
-    private final ArrayList<History> historyMap;
+    private ArrayList<History> historyMap;
 
     public HistoryMap() {
         historyMap = new ArrayList<>();
@@ -36,6 +36,7 @@ public class HistoryMap {
     }
 
     public void importFromFile(String filename) throws IOException {
+        historyMap = new ArrayList<>();
         BufferedReader br = new BufferedReader(new FileReader(filename));
         String str;
         while (true) {

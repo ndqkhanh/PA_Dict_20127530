@@ -209,8 +209,8 @@ class MyTableModel extends AbstractTableModel {
 
 public class DictionaryUI extends JPanel {
     AddSlangModal addSlangModal;
-    String[] types = {"Slang", "Definition"};
-    String[] functionNames = {"Search", "Add", "Edit", "Delete", "Reset"};
+    String[] types = {"SLANG", "DEFINITION"};
+    String[] functionNames = {"SEARCH", "ADD", "EDIT", "DELETE", "RESET"};
     JButton searchBtn, addBtn, editBtn, delBtn, resetBtn;
     JComboBox<String> searchType;
     JTable dictTable;
@@ -238,7 +238,7 @@ public class DictionaryUI extends JPanel {
         searchBar.setFont(newTextFieldFont);
         searchPanel.add(searchBar);
         searchBtn = new JButton(functionNames[0]);
-        searchBtn.setPreferredSize(new Dimension(80, 30));
+        searchBtn.setPreferredSize(new Dimension(100, 40));
         searchPanel.add(Box.createRigidArea(new Dimension(5, 0)));
         searchPanel.add(searchBtn);
         searchPanel.add(Box.createRigidArea(new Dimension(5, 0)));
@@ -255,7 +255,7 @@ public class DictionaryUI extends JPanel {
                 // Column Names
                 String[] columnNames = {"Slang", "Definition"};
                 try {
-                    if (Objects.equals(searchType.getSelectedItem(), "Slang")) {
+                    if (Objects.equals(searchType.getSelectedItem(), types[0])) {
                         data = Dictionary.convertMapToList(dict.searchBySlang(searchBar.getText()));
                     } else {
                         data = Dictionary.convertMapToList(dict.searchByDef(searchBar.getText()));
@@ -290,7 +290,7 @@ public class DictionaryUI extends JPanel {
 
         JPanel functionButtonsPanel = new JPanel();
         addBtn = new JButton(functionNames[1]);
-        addBtn.setPreferredSize(new Dimension(80, 30));
+        addBtn.setPreferredSize(new Dimension(100, 40));
         addBtn.addActionListener(new ActionListener() {
             public void getBackDict() {
                 String[] columnNames = {"Slang", "Definition"};
@@ -360,7 +360,7 @@ public class DictionaryUI extends JPanel {
         });
 
         editBtn = new JButton(functionNames[2]);
-        editBtn.setPreferredSize(new Dimension(80, 30));
+        editBtn.setPreferredSize(new Dimension(100, 40));
         editBtn.addActionListener(new ActionListener() {
             public void getBackDict() {
                 String[] columnNames = {"Slang", "Definition"};
@@ -376,7 +376,7 @@ public class DictionaryUI extends JPanel {
                 };
                 try {
                     if (dictTable.getSelectedRow() != -1) {
-                        if (Objects.equals(searchType.getSelectedItem(), "Slang")) {
+                        if (Objects.equals(searchType.getSelectedItem(), types[0])) {
                             EditModal slangModal = new EditModal(true, dictTable);
                             int result = JOptionPane.showOptionDialog(null, slangModal,
                                     "Alert", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,
@@ -433,7 +433,7 @@ public class DictionaryUI extends JPanel {
 
 
         delBtn = new JButton(functionNames[3]);
-        delBtn.setPreferredSize(new Dimension(80, 30));
+        delBtn.setPreferredSize(new Dimension(100, 40));
         delBtn.addActionListener(new ActionListener() {
             public void getBackDict() {
                 String[] columnNames = {"Slang", "Definition"};
@@ -463,7 +463,7 @@ public class DictionaryUI extends JPanel {
         });
 
         resetBtn = new JButton(functionNames[4]);
-        resetBtn.setPreferredSize(new Dimension(80, 30));
+        resetBtn.setPreferredSize(new Dimension(100, 40));
         resetBtn.addActionListener(new ActionListener() {
             public void getBackDict() throws IOException {
                 dict.importFromFile("slang.txt", false, false);

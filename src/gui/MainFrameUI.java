@@ -42,7 +42,7 @@ public class MainFrameUI extends JPanel {
                 mainPane.setViewportView(histUI);
                 break;
             case "On this day slang word":
-                randomSlangUI = new RandomSlangUI();
+                randomSlangUI = new RandomSlangUI(dict);
                 mainPane.setViewportView(randomSlangUI);
                 break;
             case "Quiz":
