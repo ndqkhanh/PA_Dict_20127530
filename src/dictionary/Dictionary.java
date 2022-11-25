@@ -1,9 +1,7 @@
 package dictionary;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 
 /**
  * dictionary
@@ -183,6 +181,40 @@ public class Dictionary {
         Object[] crunchifyKeys = dictionary.keySet().toArray();
         Object key = crunchifyKeys[new Random().nextInt(crunchifyKeys.length)];
         res.put(key.toString(), dictionary.get(key.toString()));
+        return res;
+    }
+
+    public ArrayList<String> generateNewQuiz(HashMap<String, HashMap<String, Boolean>> quiz, boolean isSlangType) {
+        ArrayList<String> res = new ArrayList<>();
+        final int[] i = {0};
+
+        if (isSlangType) {
+            final int[] t = {0};
+            quiz.values().forEach(e -> {
+                if (t[0] == 0) {
+                    Optional<String> tmp = e.keySet().stream().findFirst();
+                    tmp.ifPresent(res::add);
+                }
+                t[0] += 1;
+            });
+            dictionary.forEach((key, value) -> {
+                if (i[0] < 3 && quiz.get(key) == null) {
+                    Optional<String> tmp = value.keySet().stream().findFirst();
+                    tmp.ifPresent(res::add);
+                    i[0] += 1;
+                }
+            });
+        } else {
+            Optional<String> tmp = quiz.keySet().stream().findFirst();
+            tmp.ifPresent(res::add);
+            dictionary.forEach((key, value) -> {
+                if (i[0] < 3 && quiz.get(key) == null) {
+                    res.add(key);
+                    i[0] += 1;
+                }
+            });
+        }
+        Collections.shuffle(res);
         return res;
     }
 

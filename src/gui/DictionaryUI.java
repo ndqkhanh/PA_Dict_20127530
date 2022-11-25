@@ -333,14 +333,14 @@ public class DictionaryUI extends JPanel {
                                             addSlangModal.getDefField().getText(), true, true);
                                     JOptionPane.showMessageDialog(null,
                                             "[SUCCESS]: Overwrite slang word successfully", "Alert",
-                                            JOptionPane.WARNING_MESSAGE);
+                                            JOptionPane.INFORMATION_MESSAGE);
                                     getBackDict();
                                 } else if (dupResult == 1) {
                                     dict.addSlangWord(addSlangModal.getSlangField().getText(),
                                             addSlangModal.getDefField().getText(), false, true);
                                     JOptionPane.showMessageDialog(null,
                                             "[SUCCESS]: Duplicate slang word successfully", "Alert",
-                                            JOptionPane.WARNING_MESSAGE);
+                                            JOptionPane.INFORMATION_MESSAGE);
                                     getBackDict();
                                 }
                             } else {
@@ -348,7 +348,7 @@ public class DictionaryUI extends JPanel {
                                         addSlangModal.getDefField().getText(), false, true);
                                 JOptionPane.showMessageDialog(null,
                                         "[SUCCESS]: Add slang word successfully", "Alert",
-                                        JOptionPane.WARNING_MESSAGE);
+                                        JOptionPane.INFORMATION_MESSAGE);
                                 getBackDict();
                             }
                         } catch (IOException ex) {
@@ -391,7 +391,7 @@ public class DictionaryUI extends JPanel {
                                     System.out.println("out");
                                     JOptionPane.showMessageDialog(null,
                                             "[SUCCESS]: Edit slang successfully", "Alert",
-                                            JOptionPane.WARNING_MESSAGE);
+                                            JOptionPane.INFORMATION_MESSAGE);
                                     getBackDict();
                                 }
                             }
@@ -410,7 +410,7 @@ public class DictionaryUI extends JPanel {
                                             defModal.getOldField().getText(), defModal.getNewField().getText());
                                     JOptionPane.showMessageDialog(null,
                                             "[SUCCESS]: Edit definition successfully", "Alert",
-                                            JOptionPane.WARNING_MESSAGE);
+                                            JOptionPane.INFORMATION_MESSAGE);
                                     getBackDict();
                                 }
                             }
@@ -449,7 +449,7 @@ public class DictionaryUI extends JPanel {
                         dict.deleteSlangWord(dictTable.getValueAt(dictTable.getSelectedRow(), 0).toString());
                         JOptionPane.showMessageDialog(null,
                                 "[SUCCESS]: Delete slang word successfully", "Alert",
-                                JOptionPane.WARNING_MESSAGE);
+                                JOptionPane.INFORMATION_MESSAGE);
                         getBackDict();
                     } else {
                         JOptionPane.showMessageDialog(null,
@@ -478,7 +478,7 @@ public class DictionaryUI extends JPanel {
                 try {
                     JOptionPane.showMessageDialog(null,
                             "[SUCCESS]: Reset dictionary successfully", "Alert",
-                            JOptionPane.WARNING_MESSAGE);
+                            JOptionPane.INFORMATION_MESSAGE);
                     getBackDict();
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);

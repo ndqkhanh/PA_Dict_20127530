@@ -46,7 +46,7 @@ public class MainFrameUI extends JPanel {
                 mainPane.setViewportView(randomSlangUI);
                 break;
             case "Quiz":
-                quizUI = new QuizGameUI();
+                quizUI = new QuizGameUI(dict);
                 mainPane.setViewportView(quizUI);
                 break;
         }
