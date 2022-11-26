@@ -56,17 +56,14 @@ public class Dictionary {
 
     public void addIndexDef(String def) {
         String[] parts = def.toLowerCase().split(" ");
-        StringBuilder tmp = new StringBuilder();
         for (String s : parts) {
-            tmp.append(s).append(" ");
-            String part = tmp.substring(0, tmp.length() - 1);
-            HashMap<String, Boolean> tmpMap = indexDef.get(part);
+            HashMap<String, Boolean> tmpMap = indexDef.get(s);
             if (tmpMap != null) {
                 tmpMap.putIfAbsent(def, true);
             } else {
                 tmpMap = new HashMap<>();
                 tmpMap.put(def, true);
-                indexDef.put(part, tmpMap);
+                indexDef.put(s, tmpMap);
             }
         }
     }
