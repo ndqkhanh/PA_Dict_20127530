@@ -27,12 +27,10 @@ public class Dictionary {
 
     public static String[][] convertMapToList(HashMap<String, HashMap<String, Boolean>> map) {
         ArrayList<String[]> mainList = new ArrayList<>();
-        map.forEach((key, value) -> {
-            value.forEach((k, v) -> {
-                String[] tmp = {key, k};
-                mainList.add(tmp);
-            });
-        });
+        map.forEach((key, value) -> value.forEach((k, v) -> {
+            String[] tmp = {key, k};
+            mainList.add(tmp);
+        }));
         String[][] resList = new String[mainList.size()][];
         final int[] i = {0};
         mainList.forEach(line -> {
@@ -97,9 +95,7 @@ public class Dictionary {
             try {
                 StringBuilder message = new StringBuilder();
                 if (!value.isEmpty()) {
-                    value.forEach((k, v) -> {
-                        message.append(k).append("`");
-                    });
+                    value.forEach((k, v) -> message.append(k).append("`"));
                     bw.write(key + "`" + message.substring(0, message.length() - 1) + "\n");
                 }
             } catch (IOException e) {
@@ -111,10 +107,9 @@ public class Dictionary {
     }
 
     /**
-     * @param filename
-     * @param importIndexFile
-     * @param importHistoryFile
-     * @throws IOException
+     * @param filename        name of file
+     * @param importIndexFile check if import index file or not
+     * @throws IOException throw io exception
      */
     public void importFromFile(String filename, boolean importIndexFile) throws IOException {
         dictionary = new HashMap<>();
@@ -182,9 +177,7 @@ public class Dictionary {
                 .forEach((key, value) -> {
                     try {
                         StringBuilder message = new StringBuilder();
-                        value.forEach((k, v) -> {
-                            message.append(k).append("| ");
-                        });
+                        value.forEach((k, v) -> message.append(k).append("| "));
                         bw.write(key + "`" + message.substring(0, message.length() - 2) + "\n");
                     } catch (IOException e) {
                         System.out.println(e.getMessage());
@@ -200,9 +193,7 @@ public class Dictionary {
                 .forEach((key, value) -> {
                     try {
                         StringBuilder message = new StringBuilder();
-                        value.forEach((k, v) -> {
-                            message.append(k).append("| ");
-                        });
+                        value.forEach((k, v) -> message.append(k).append("| "));
                         bw.write(key + "`" + message.substring(0, message.length() - 2) + "\n");
                     } catch (IOException e) {
                         System.out.println(e.getMessage());
@@ -213,7 +204,7 @@ public class Dictionary {
     }
 
     /**
-     * @return
+     * @return HashMap<String, HashMap < String, Boolean>> random slang word
      */
     public HashMap<String, HashMap<String, Boolean>> generateRandom() {
         HashMap<String, HashMap<String, Boolean>> res = new HashMap<>();
@@ -284,9 +275,7 @@ public class Dictionary {
         HashMap<String, HashMap<String, Boolean>> res = new HashMap<>();
         HashMap<String, Boolean> slangs = indexSlang.get(slang.toLowerCase());
         if (slangs != null)
-            slangs.forEach((key, value) -> {
-                res.put(key, dictionary.get(key));
-            });
+            slangs.forEach((key, value) -> res.put(key, dictionary.get(key)));
         historyMap.putAll(res);
         exportToHistoryFile("history.dat");
         return res;
@@ -301,13 +290,11 @@ public class Dictionary {
         HashMap<String, HashMap<String, Boolean>> res = new HashMap<>();
         HashMap<String, Boolean> defs = indexDef.get(def.toLowerCase());
         if (defs != null)
-            defs.forEach((key, value) -> {
-                dictionary.forEach((k, v) -> {
-                    if (v.get(key) != null) {
-                        res.put(k, v);
-                    }
-                });
-            });
+            defs.forEach((key, value) -> dictionary.forEach((k, v) -> {
+                if (v.get(key) != null) {
+                    res.put(k, v);
+                }
+            }));
         historyMap.putAll(res);
         exportToHistoryFile("history.dat");
         return res;
@@ -369,10 +356,7 @@ public class Dictionary {
     }
 
     /**
-     * @param slang
-     * @param oldDef
-     * @param newDef
-     * @throws IOException
+     *
      */
     public void editDef(String slang, String oldDef, String newDef) throws IOException {
         if (oldDef.equals(newDef)) return;
