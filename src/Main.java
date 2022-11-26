@@ -18,8 +18,7 @@ public class Main {
             if (!f.exists())
                 filename = "slang.txt";
             File f2 = new File("indexSlang.dat");
-            File f3 = new File("indexDef.dat");
-            dict.importFromFile(filename, f2.exists() && f3.exists());
+            dict.importFromFile(filename, f2.exists());
         } catch (IOException e) {
             System.out.println("[ERROR]: " + e);
         }
